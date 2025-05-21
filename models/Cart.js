@@ -113,6 +113,24 @@ class Cart {
       console.error("Error occurred while clearing cart");
     }
   }
+
+  static async deleteProductByName(name) {
+  const db = getDatabase();
+
+  try {
+    const cart = await this.getCart();
+    const updatedItems = cart.items.filter(item => item.product.name !== name);
+
+    await db.collection(COLLECTION_NAME).updateOne(
+      {},
+      { $set: { items: updatedItems } }
+    );
+  } catch (error) {
+    console.error(`Error occurred while deleting '${name}' from cart`);
+  }
 }
+
+}
+
 
 module.exports = Cart;

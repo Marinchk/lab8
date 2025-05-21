@@ -49,13 +49,16 @@ class Product {
     }
   }
 
-  static async deleteByName(name) {
+    static async deleteByName(name) {
     const db = getDatabase();
 
     try {
-      await db.collection(COLLECTION_NAME).deleteOne({ name });
+      await db.collection("products").deleteOne({ name });
+
+      // Удаляем из корзины тоже
+      await Cart.deleteProductByName(name);
     } catch (error) {
-      console.error("Error occurred while deleting product");
+      console.error(`Error deleting product '${name}' from DB and cart`, error);
     }
   }
 

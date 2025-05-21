@@ -67,3 +67,16 @@ exports.deleteProduct = async (request, response) => {
 
   response.status(STATUS_CODE.OK).json({ success: true });
 };
+
+exports.addProduct = async (req, res) => {
+  const { name, price, description, image } = req.body;
+
+  await Product.add({
+    name,
+    price,
+    description,
+    image,
+  });
+
+  res.redirect(302, '/products/new');
+};
